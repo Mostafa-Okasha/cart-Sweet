@@ -51,12 +51,15 @@
 
     //show totals
 
-    let card=document.getElementsByClassName("card");
+    let items=document.querySelector(".cart-item-price");
+    consol.log(items);
+    /*
     function showTotals(){
         let total=[];
         let items=document.querySelector(".cart-item-price");
+        consol.log(items);
         items.forEach(function(item){
             total.push(item.textContent);
         })
-    }
+    }*/
 })();
