@@ -28,25 +28,45 @@ let cartBtn=document.querySelectorAll(".store-item-icon");
                 item.name=name;
                 item.finalPrice=finalPrice;
                 productContainer.push(item);
-                console.log(productContainer);
-                let cartItem=document.createElement('div');
-                cartItem.innerHTML=`
-                <div class="allContainer">
-                <div class="d-flex justify-content-between">
-                    <img src="${item.fullPath}" class="img-fluid rounded-circle w-25" id="item-img" alt="">
-                    <div class="item-text">
-                    <p id="cart-item-title" class="font-weight-bold mb-0">${item.name}</p>
-                    <span>$</span>
-                    <span id="cart-item-price" class="cart-item-price" class="mb-0">${item.finalPrice}</span>
-                    </div>
-                    <a href="#" id='cart-item-remove' class="cart-item-remove">
-                    <i id="icon" class="fas fa-trash"></i>
-                    </a>
-                    </div>
-                </div>`;
+                //console.log(productContainer);
+                localStorage.setItem("productContainer",JSON.stringify(productContainer));
+                function displayData()
+                {
+                    let cartItem="";
+                    for(let i=0;i<productContainer.length;i++)
+                    {
+                        cartItem+=`
+                        <div class="allContainer">
+                        <div class="d-flex justify-content-between my-3">
+                            <img src="${productContainer[i].fullPath}" class="img-fluid rounded-circle w-25" id="item-img" alt="">
+                            <div class="item-text">
+                            <p id="cart-item-title" class="font-weight-bold mb-0">${productContainer[i].name}</p>
+                            <span>$</span>
+                            <span id="cart-item-price" class="cart-item-price" class="mb-0">${productContainer[i].finalPrice}</span>
+                            </div>
+                            <a href="#" id='cart-item-remove' class="cart-item-remove">
+                            <i id="icon" class="fas fa-trash"></i>
+                            </a>
+                            </div>
+                        </div>`;
+                    }
+                    document.getElementById("allContainer").innerHTML=cartItem;
+                }
+                if(localStorage.getItem("productContainer")==null)
+                {
+                    productContainer==null;
+                }
+                else
+                {
+                    productContainer=JSON.parse(localStorage.getItem("productContainer"));
+                    console.log(productContainer);
+                    displayData();
+                    showTotal();
+                }
+                displayData();
                 let cart=document.getElementById('cart');
                 let total=document.querySelector('.cart-buttons-container');
-                cart.insertBefore(cartItem,total);
+                //cart.insertBefore(cartItem,total);
                 alert("item added to the cart");
                 showTotal();
             }
@@ -63,6 +83,7 @@ function showTotal()
         total.push(parseFloat(item.textContent));
     });
 
+    localStorage.setItem("total",JSON.stringify(productContainer));
     let totalMoney=total.reduce(function(total,item)
     {
         total+=item;
@@ -78,6 +99,7 @@ function showTotal()
 let cart_item=document.getElementsByClassName('cart-item');
 let allContainer=document.getElementsByClassName("allContainer");
 $("#clear-cart").click(function(){
+    localStorage.removeItem("productContainer");
     for(let i=0;i<allContainer.length;i++)
     {
     $(".allContainer").hide();
